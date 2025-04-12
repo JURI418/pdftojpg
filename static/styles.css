@@ -1,0 +1,76 @@
+/* static/styles.css */
+
+body {
+    font-family: 'Segoe UI', 'Noto Sans KR', sans-serif;
+    background: #f5f3fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(138, 100, 189, 0.1);
+    text-align: center;
+    border: 2px solid #e1d5f0;
+}
+
+h1 {
+    font-size: 26px;
+    color: #6a4ba6;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #5c4d85;
+}
+
+input[type="file"] {
+    padding: 12px;
+    border: 1px solid #d4c6ec;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    background-color: #f8f6fb;
+}
+
+button {
+    padding: 12px 24px;
+    background-color: #a58ee0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #8c73c9;
+}
+
+#result-section {
+    margin-top: 40px;
+}
+
+#download-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background-color: #9b8ad1;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+#download-link:hover {
+    background-color: #7d6db4;
+}
