@@ -31,7 +31,7 @@ def convert_pdf():
 
     try:
         # 첫 페이지만 변환 (full list: convert_from_path(filepath))
-        images = convert_from_path(filepath, dpi=200, first_page=1, last_page=1)
+        images = convert_from_path(filepath, dpi=200, first_page=1, last_page=1, poppler_path=POPPLER_PATH)
         img_path = os.path.join(app.config['CONVERTED_FOLDER'], 'converted.jpg')
         images[0].save(img_path, 'JPEG')
 
