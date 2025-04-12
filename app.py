@@ -1,44 +1,53 @@
-# app.py
-import os
+# 파일 위치: pdfproject/app.py
 from flask import Flask, render_template, request, send_file
-from pdf2image import convert_from_path
+import img2pdf
 from werkzeug.utils import secure_filename
+import os
+from io import BytesIO
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['CONVERTED_FOLDER'] = 'converted'
-
-# 폴더가 없다면 생성
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-os.makedirs(app.config['CONVERTED_FOLDER'], exist_ok=True)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 @app.route('/convert', methods=['POST'])
-def convert_pdf():
-    if 'pdf_file' not in request.files:
-        return "No file uploaded", 400
 
-    file = request.files['pdf_file']
-    if file.filename == '':
-        return "No selected file", 400
+def convert():
+    image_files = request.files.getlist('jpgFiles')
 
-    filename = secure_filename(file.filename)
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(filepath)
+    image_streams = []
+    for file in image_files:
+        if file and file.filename.lower().endswith(('.jpg', '.jpeg')):
+            image_streams.append(file.read())
 
-    try:
-        # 첫 페이지만 변환 (full list: convert_from_path(filepath))
-        images = convert_from_path(filepath, dpi=200, first_page=1, last_page=1)
-        img_path = os.path.join(app.config['CONVERTED_FOLDER'], 'converted.jpg')
-        images[0].save(img_path, 'JPEG')
+    if not image_streams:
+        return "No valid images", 400
 
-        return send_file(img_path, as_attachment=True)
-    except Exception as e:
-        return f"변환 중 오류 발생: {str(e)}", 500
+    pdf_bytes = BytesIO()
+    pdf_bytes.write(img2pdf.convert(image_streams))
+    pdf_bytes.seek(0)
+
+    return send_file(
+        pdf_bytes,
+        as_attachment=True,
+        download_name="converted.pdf",
+        mimetype='application/pdf'
+    )
+
+
+    # 임시 이미지 삭제
+    for path in image_paths:
+        os.remove(path)
+
+    return send_file(
+        pdf_bytes,
+        as_attachment=True,
+        download_name="converted.pdf",
+        mimetype='application/pdf'
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
